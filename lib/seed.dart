@@ -2,8 +2,27 @@ import 'package:doomi/model/task.dart';
 import 'package:doomi/util/database_helper.dart';
 
 class Seed {
+  static Future<void> printTasks() async {
+    final tasks = await DatabaseHelper().getTasks();
+
+    // Print all tasks
+    for (var task in tasks) {
+      print('Task: ${task.title}');
+      if (task.description != null) {
+        print('  Description: ${task.description}');
+      }
+      print('  Priority: ${task.priority}');
+      print('  Completed: ${task.isCompleted}');
+      if (task.reminder != null) {
+        print('  Reminder: ${task.reminder}');
+      }
+      print('---');
+    }
+  }
+
   static Future<void> addToDatabase() async {
-    await DatabaseHelper().deleteAllTasks();
+    // await DatabaseHelper().deleteAllTasks();
+    await DatabaseHelper().deleteAndRecreateTable();
 
     // Create 5 tasks directly
     final tasks = [

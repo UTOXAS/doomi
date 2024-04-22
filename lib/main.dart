@@ -2,14 +2,15 @@ import 'package:doomi/screens/task_list_screen.dart';
 import 'package:doomi/seed.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:doomi/util/database_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize FFI for sqflite
   // sqfliteFfiInit();
   // databaseFactory = databaseFactoryFfi;
-  Seed.addToDatabase();
+  // Seed.addToDatabase();
+  // Seed.printTasks();
   runApp(const MyApp());
 }
 

@@ -42,16 +42,20 @@ class Task {
     }
   }
 
-  factory Task.fromMap(Map<String, dynamic> map) => Task(
-        id: map['id'] as int,
-        title: map['title'] as String,
-        description: map['description'] as String?,
-        priority: Priority.values[map['priority'] as int],
-        isCompleted: map['isCompleted'] as int == 1,
-        reminder: map['reminder'] != null
-            ? DateTime.parse(map['reminder'] as String)
-            : null,
-      );
+  factory Task.fromMap(Map<String, dynamic> map) {
+    print(map['priority']);
+    print(map['priority'].runtimeType);
+    return Task(
+      id: map['id'] as int,
+      title: map['title'] as String,
+      description: map['description'] as String?,
+      priority: Priority.values[map['priority'] as int],
+      isCompleted: map['isCompleted'] as int == 1,
+      reminder: map['reminder'] != null
+          ? DateTime.parse(map['reminder'] as String)
+          : null,
+    );
+  }
 
   Map<String, dynamic> toMap() => {
         'id': id,

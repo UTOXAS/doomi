@@ -15,7 +15,7 @@ class DatabaseHelper {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             description TEXT,
-            priority TEXT,
+            priority INTEGER,
             isCompleted INTEGER NOT NULL DEFAULT 0,
             reminder DATETIME
           )
@@ -78,5 +78,20 @@ class DatabaseHelper {
   Future<int> deleteAllTasks() async {
     final db = await getDatabase();
     return await db.delete(_tableName);
+  }
+
+  Future<void> deleteAndRecreateTable() async {
+    final db = await getDatabase();
+    await db.execute('DROP TABLE IF EXISTS $_tableName');
+    await db.execute('''
+      CREATE TABLE $_tableName (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        description TEXT,
+        priority INTEGER,
+        isCompleted INTEGER NOT NULL DEFAULT 0,
+        reminder DATETIME
+      )
+    ''');
   }
 }
