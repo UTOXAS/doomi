@@ -11,6 +11,7 @@ void main() async {
   // databaseFactory = databaseFactoryFfi;
   // Seed.addToDatabase();
   // Seed.printTasks();
+  // Seed.addMoreToTheDatabase();
   runApp(const MyApp());
 }
 
@@ -38,10 +39,11 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+        // scaffoldBackgroundColor: Colors.white,
+        // appBarTheme: AppBarTheme(backgroundColor: Colors.white),
 
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,

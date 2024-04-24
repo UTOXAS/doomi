@@ -26,20 +26,20 @@ class DatabaseHelper {
   }
 
   // Create a new task
-  Future<int> insertTask(Task task) async {
+  static Future<int> insertTask(Task task) async {
     final db = await getDatabase();
     return await db.insert(_tableName, task.toMap());
   }
 
   // Read all tasks
-  Future<List<Task>> getTasks() async {
+  static Future<List<Task>> getTasks() async {
     final db = await getDatabase();
     final List<Map<String, dynamic>> maps = await db.query(_tableName);
     return List.generate(maps.length, (i) => Task.fromMap(maps[i]));
   }
 
   // Read a specific task by ID
-  Future<Task?> getTask(int id) async {
+  static Future<Task?> getTask(int id) async {
     final db = await getDatabase();
     final List<Map<String, dynamic>> maps = await db.query(
       _tableName,
@@ -54,7 +54,7 @@ class DatabaseHelper {
   }
 
   // Update an existing task
-  Future<int> updateTask(Task task) async {
+  static Future<int> updateTask(Task task) async {
     final db = await getDatabase();
     return await db.update(
       _tableName,
@@ -64,8 +64,18 @@ class DatabaseHelper {
     );
   }
 
+  static Future<void> updateTaskCompletion(int taskId, bool isComplete) async {
+    final db = await getDatabase();
+    await db.update(
+      _tableName,
+      {'isCompleted': isComplete}, // Set isComplete to provided value
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
+  }
+
   // Delete a task
-  Future<int> deleteTask(int id) async {
+  static Future<int> deleteTask(int id) async {
     final db = await getDatabase();
     return await db.delete(
       _tableName,
@@ -75,12 +85,12 @@ class DatabaseHelper {
   }
 
   // Delete all tasks
-  Future<int> deleteAllTasks() async {
+  static Future<int> deleteAllTasks() async {
     final db = await getDatabase();
     return await db.delete(_tableName);
   }
 
-  Future<void> deleteAndRecreateTable() async {
+  static Future<void> deleteAndRecreateTable() async {
     final db = await getDatabase();
     await db.execute('DROP TABLE IF EXISTS $_tableName');
     await db.execute('''

@@ -1,6 +1,8 @@
 import 'package:doomi/model/task.dart';
+import 'package:doomi/util/database_helper.dart';
 import 'package:doomi/widgets/priority_dropdown.dart';
 import 'package:doomi/widgets/priority_row.dart';
+import 'package:doomi/widgets/task_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -81,10 +83,48 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   textAlign: TextAlign.left,
                 ),
               ),
+              Expanded(
+                child: FutureBuilder(
+                    future: DatabaseHelper.getTasks(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final tasks = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: tasks.length,
+                          itemBuilder: (context, index) {
+                            final task = tasks[index];
+                            return TaskCard(
+                              task: task,
+                              onDelete: () => _deleteTask(task.id!),
+                              onEdit: () => _editTask(task.id!),
+                              onChecked: (isChecked) async {
+                                await DatabaseHelper.updateTaskCompletion(
+                                    task.id!, !task.isCompleted);
+                                setState(() {});
+                              },
+                            );
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Erro: ${snapshot.error}'));
+                      }
+
+                      return const Center(child: CircularProgressIndicator());
+                    }),
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _deleteTask(int taskId) async {
+    await DatabaseHelper.deleteTask(taskId);
+    setState(() {});
+  }
+
+  void _editTask(int taskId) async {
+    print('Edit Task: $taskId');
   }
 }

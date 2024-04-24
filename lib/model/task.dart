@@ -43,8 +43,6 @@ class Task {
   }
 
   factory Task.fromMap(Map<String, dynamic> map) {
-    print(map['priority']);
-    print(map['priority'].runtimeType);
     return Task(
       id: map['id'] as int,
       title: map['title'] as String,
